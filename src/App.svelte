@@ -87,6 +87,7 @@
 	<form on:submit|preventDefault={findQuotes}>
 		<label for="imageNum"
 			>Find quotes: <input
+				style="width: 150px"
 				type="text"
 				id="input"
 				name="input"
