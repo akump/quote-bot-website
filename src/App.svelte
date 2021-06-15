@@ -1,5 +1,4 @@
 <script>
-	import { beforeUpdate } from "svelte";
 	import { Circle } from "svelte-loading-spinners";
 	import { sleep } from "./util.js";
 
