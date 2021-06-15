@@ -1,5 +1,6 @@
 <script>
 	import { Circle } from "svelte-loading-spinners";
+	import { sleep } from "./util.js";
 
 	let inputtedUser;
 	let allUsersQuotes;
@@ -8,11 +9,12 @@
 	const findQuotes = async function () {
 		loading = true;
 		try {
-			// const getQuotesRes = await fetch("/getQuotes");
+			// const getQuotesRes = await fetch("/currentWeek");
 			// allUsersQuotes = await getQuotesRes.json();
 		} catch {
 			allUsersQuotes = [];
 		}
+		await sleep(500);
 		loading = false;
 	};
 </script>
