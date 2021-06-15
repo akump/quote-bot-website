@@ -3,9 +3,9 @@
 	import { sleep } from "./util.js";
 
 	let selected = "name";
-	let options = ["name", "quote"];
+	let options = ["name - Not case sensitive", "quote - Case sensitive"];
 
-	let input;
+	let input = "";
 	let allUsersQuotes;
 	let loading;
 
@@ -16,8 +16,9 @@
 	const findQuotes = async function () {
 		loading = true;
 		try {
+			let queryName = selected.split("-")[0].trim();
 			const getQuotesRes = await fetch(
-				`https://quote-test-app.herokuapp.com/quotes?${selected}=${input}`
+				`https://quote-test-app.herokuapp.com/quotes?${queryName}=${input}`
 			);
 			let json = await getQuotesRes.json();
 			allUsersQuotes = json.results;
