@@ -120,6 +120,7 @@
 <style>
 	main {
 		padding: 1em;
+		padding-top: 0;
 		margin: 0 auto;
 	}
 
