@@ -1,3 +1,5 @@
 # quote-bot-website
 
-![2021-06-14 at 9 48 PM](https://user-images.githubusercontent.com/22382028/121980619-3f703100-cd5a-11eb-81ee-a20d014d7d38.png)
+Front end for Memecenter's [quote bot](https://github.com/SpoonDoctor/QuoteBot). Built using Svelte/express and hosted on Google's cloude services.
+
+![2021-06-14 at 9 48 PM](https://user-images.githubusercontent.com/22382028/121980653-52830100-cd5a-11eb-9760-1932b3d7e3b1.png)
