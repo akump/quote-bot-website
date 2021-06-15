@@ -1,4 +1,5 @@
 <script>
+	import { beforeUpdate } from "svelte";
 	import { Circle } from "svelte-loading-spinners";
 	import { sleep } from "./util.js";
 
@@ -8,6 +9,17 @@
 	let input = "";
 	let allUsersQuotes;
 	let loading;
+
+	const getRandomQuote = async function () {
+		const getQuotesRes = await fetch(
+			`https://quote-test-app.herokuapp.com/quotes?name=`
+		);
+		const json = await getQuotesRes.json();
+		const allQuotes = json.results;
+		const randomQuote =
+			allQuotes[Math.floor(Math.random() * allQuotes.length - 1)];
+		return randomQuote.quote;
+	};
 
 	function capitalize(s) {
 		return s[0].toUpperCase() + s.slice(1);
@@ -21,7 +33,7 @@
 			const getQuotesRes = await fetch(
 				`https://quote-test-app.herokuapp.com/quotes?${queryName}=${input}`
 			);
-			let json = await getQuotesRes.json();
+			const json = await getQuotesRes.json();
 			await sleep(500);
 			allUsersQuotes = json.results;
 		} catch {
@@ -33,6 +45,13 @@
 
 <main>
 	<h1>Quote Bot</h1>
+	{#await getRandomQuote()}
+		<p>&nbsp</p>
+	{:then quote}
+		<p>{quote}</p>
+	{/await}
+	<div class="thin-line" />
+
 	{#each options as value}
 		<label
 			><input type="radio" {value} bind:group={selected} />
@@ -81,6 +100,12 @@
 		font-size: 4em;
 		font-weight: 150;
 		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.thin-line {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+		margin-bottom: 20px;
 	}
 
 	@media (min-width: 640px) {
