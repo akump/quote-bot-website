@@ -1,28 +1,46 @@
 <script>
 	import { Circle } from "svelte-loading-spinners";
-	import { sleep } from "./util.js";
+	import { sleep, capitalize } from "./utils.js";
+	import { fade } from "svelte/transition";
 
-	let selected = "name - Not case sensitive";
-	let options = ["name - Not case sensitive", "quote - Case sensitive"];
+	let selected;
+	const options = ["name - Not case sensitive", "quote - Case sensitive"];
+	const radioSelection = localStorage.getItem("radioSelection");
+
+	if (!radioSelection) {
+		localStorage.setItem("radioSelection", "name - Not case sensitive");
+		selected = "name - Not case sensitive";
+	} else {
+		selected = radioSelection;
+	}
+
+	const handleRadio = function (e) {
+		localStorage.setItem("radioSelection", e.target.defaultValue);
+	};
 
 	let input = "";
 	let allUsersQuotes;
 	let loading;
 
 	const getRandomQuote = async function () {
-		const getQuotesRes = await fetch(
-			`https://quote-test-app.herokuapp.com/quotes?name=`
-		);
-		const json = await getQuotesRes.json();
-		const allQuotes = json.results;
+		let allQuotes;
+		let cachedQuotes = localStorage.getItem("quotes");
+		if (!cachedQuotes) {
+			const getQuotesRes = await fetch(
+				`https://quote-test-app.herokuapp.com/quotes?name=`
+			);
+			const json = await getQuotesRes.json();
+			allQuotes = json.results;
+			const stringifiedQuotes = JSON.stringify(allQuotes, null, 2);
+			localStorage.setItem("quotes", stringifiedQuotes);
+		} else {
+			const objQuotes = JSON.parse(cachedQuotes, null, 2);
+			allQuotes = objQuotes;
+		}
 		const randomQuote =
 			allQuotes[Math.floor(Math.random() * allQuotes.length - 1)];
 		return randomQuote.quote;
 	};
-
-	function capitalize(s) {
-		return s[0].toUpperCase() + s.slice(1);
-	}
 
 	const findQuotes = async function () {
 		loading = true;
@@ -44,19 +62,26 @@
 
 <main>
 	<h1>Quote Bot</h1>
+
 	{#await getRandomQuote()}
 		<p>&nbsp</p>
 	{:then quote}
-		<p>{quote}</p>
+		<p transition:fade>{quote}</p>
 	{/await}
+
 	<div class="thin-line" />
 
 	{#each options as value}
 		<label
-			><input type="radio" {value} bind:group={selected} />
-			{capitalize(value)}</label
+			><input
+				type="radio"
+				{value}
+				bind:group={selected}
+				on:click|once={handleRadio}
+			/>{capitalize(value)}</label
 		>
 	{/each}
+
 	<form on:submit|preventDefault={findQuotes}>
 		<label for="imageNum"
 			>Find quotes: <input
@@ -68,6 +93,7 @@
 			<button type="submit"> Go </button>
 		</label>
 	</form>
+
 	{#if allUsersQuotes}
 		{#if allUsersQuotes.length === 0}
 			<h4>No quotes found</h4>
