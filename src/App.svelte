@@ -15,17 +15,18 @@
 
 	const findQuotes = async function () {
 		loading = true;
+		allUsersQuotes = null;
 		try {
 			let queryName = selected.split("-")[0].trim();
 			const getQuotesRes = await fetch(
 				`https://quote-test-app.herokuapp.com/quotes?${queryName}=${input}`
 			);
 			let json = await getQuotesRes.json();
+			await sleep(500);
 			allUsersQuotes = json.results;
 		} catch {
 			allUsersQuotes = [];
 		}
-		await sleep(1000);
 		loading = false;
 	};
 </script>
