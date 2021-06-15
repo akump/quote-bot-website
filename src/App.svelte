@@ -2,7 +2,7 @@
 	import { Circle } from "svelte-loading-spinners";
 	import { sleep } from "./util.js";
 
-	let selected = "name";
+	let selected = "name - Not case sensitive";
 	let options = ["name - Not case sensitive", "quote - Case sensitive"];
 
 	let input = "";
