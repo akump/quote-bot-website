@@ -21,6 +21,7 @@
 	let input = "";
 	let allUsersQuotes;
 	let loading;
+	let searchQuery = "";
 
 	const getRandomQuote = async function () {
 		let allQuotes;
@@ -45,10 +46,11 @@
 	const findQuotes = async function () {
 		loading = true;
 		allUsersQuotes = null;
+		searchQuery = input;
 		try {
 			let queryName = selected.split("-")[0].trim();
 			const getQuotesRes = await fetch(
-				`https://quote-test-app.herokuapp.com/quotes?${queryName}=${input}`
+				`https://quote-test-app.herokuapp.com/quotes?${queryName}=${searchQuery}`
 			);
 			const json = await getQuotesRes.json();
 			await sleep(500);
@@ -98,9 +100,9 @@
 		{#if allUsersQuotes.length === 0}
 			<h4>No quotes found</h4>
 		{:else if allUsersQuotes.length === 1}
-			<h4>Found 1 quote for "{input}"</h4>
+			<h4>Found 1 quote for "{searchQuery}"</h4>
 		{:else if allUsersQuotes.length > 0}
-			<h4>Found {allUsersQuotes.length} quotes for "{input}"</h4>
+			<h4>Found {allUsersQuotes.length} quotes for "{searchQuery}"</h4>
 		{:else}
 			<h4>Error finding quotes</h4>
 		{/if}
