@@ -9,6 +9,7 @@
     "deploy": "gcloud app deploy",
     "get-project": "gcloud config get-value project"
   },
+  "type": "module",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
