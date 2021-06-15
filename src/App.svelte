@@ -1,25 +1,67 @@
 <script>
-	export let name;
+	import { Circle } from "svelte-loading-spinners";
+
+	let inputtedUser;
+	let allUsersQuotes;
+	let loading;
+
+	const findQuotes = async function () {
+		loading = true;
+		try {
+			// const getQuotesRes = await fetch("/getQuotes");
+			// allUsersQuotes = await getQuotesRes.json();
+		} catch {
+			allUsersQuotes = [];
+		}
+		loading = false;
+	};
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Quote Bot</h1>
+	<form on:submit|preventDefault={findQuotes}>
+		<label for="imageNum"
+			>Find user's quotes: <input
+				type="text"
+				id="inputtedUser"
+				name="inputtedUser"
+				bind:value={inputtedUser}
+			/>
+			<button type="submit"> Go </button>
+		</label>
+	</form>
+	{#if allUsersQuotes}
+		{#if allUsersQuotes.length === 0}
+			<h4>No quotes found</h4>
+		{:else if allUsersQuotes.length === 1}
+			<h4>Found 1 quote</h4>
+		{:else if allUsersQuotes.length > 0}
+			<h4>Found {allUsersQuotes.length} quotes for user</h4>
+		{:else}
+			<h4>Error finding quotes</h4>
+		{/if}
+		<ol>
+			{#each allUsersQuotes as quote}
+				<li>{quote}</li>
+			{/each}
+		</ol>
+	{:else if loading}
+		<Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+	{/if}
 </main>
 
 <style>
 	main {
-		text-align: center;
 		padding: 1em;
 		max-width: 240px;
 		margin: 0 auto;
 	}
 
 	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
+		color: #b10bb1;
 		font-size: 4em;
-		font-weight: 100;
+		font-weight: 150;
+		margin-top: 0;
 	}
 
 	@media (min-width: 640px) {
