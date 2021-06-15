@@ -76,6 +76,7 @@
 	{#each options as value}
 		<label
 			><input
+				class="radio-button"
 				type="radio"
 				{value}
 				bind:group={selected}
@@ -135,6 +136,10 @@
 	.thin-line {
 		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
 		margin-bottom: 20px;
+	}
+
+	.radio-button {
+		margin-right: 5px;
 	}
 
 	@media (min-width: 640px) {
