@@ -2,32 +2,48 @@
 	import { Circle } from "svelte-loading-spinners";
 	import { sleep } from "./util.js";
 
-	let inputtedUser;
+	let selected = "name";
+	let options = ["name", "quote"];
+
+	let input;
 	let allUsersQuotes;
 	let loading;
+
+	function capitalize(s) {
+		return s[0].toUpperCase() + s.slice(1);
+	}
 
 	const findQuotes = async function () {
 		loading = true;
 		try {
-			// const getQuotesRes = await fetch("/currentWeek");
-			// allUsersQuotes = await getQuotesRes.json();
+			const getQuotesRes = await fetch(
+				`https://quote-test-app.herokuapp.com/quotes?${selected}=${input}`
+			);
+			let json = await getQuotesRes.json();
+			allUsersQuotes = json.results;
 		} catch {
 			allUsersQuotes = [];
 		}
-		await sleep(500);
+		await sleep(1000);
 		loading = false;
 	};
 </script>
 
 <main>
 	<h1>Quote Bot</h1>
+	{#each options as value}
+		<label
+			><input type="radio" {value} bind:group={selected} />
+			{capitalize(value)}</label
+		>
+	{/each}
 	<form on:submit|preventDefault={findQuotes}>
 		<label for="imageNum"
-			>Find user's quotes: <input
+			>Find quotes: <input
 				type="text"
-				id="inputtedUser"
-				name="inputtedUser"
-				bind:value={inputtedUser}
+				id="input"
+				name="input"
+				bind:value={input}
 			/>
 			<button type="submit"> Go </button>
 		</label>
@@ -36,15 +52,15 @@
 		{#if allUsersQuotes.length === 0}
 			<h4>No quotes found</h4>
 		{:else if allUsersQuotes.length === 1}
-			<h4>Found 1 quote</h4>
+			<h4>Found 1 quote for "{input}"</h4>
 		{:else if allUsersQuotes.length > 0}
-			<h4>Found {allUsersQuotes.length} quotes for user</h4>
+			<h4>Found {allUsersQuotes.length} quotes for "{input}"</h4>
 		{:else}
 			<h4>Error finding quotes</h4>
 		{/if}
 		<ol>
-			{#each allUsersQuotes as quote}
-				<li>{quote}</li>
+			{#each allUsersQuotes as entry}
+				<li>{entry.quote}</li>
 			{/each}
 		</ol>
 	{:else if loading}
