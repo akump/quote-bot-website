@@ -63,7 +63,7 @@
 </script>
 
 <main>
-	<h1>Quote Bot</h1>
+	<h1 class="rainbow rainbow_text_animated">Quote Bot</h1>
 
 	{#await getRandomQuote()}
 		<p>&nbsp</p>
@@ -126,7 +126,7 @@
 	}
 
 	h1 {
-		color: #b10bb1;
+		/* color: #b10bb1; */
 		font-size: 4em;
 		font-weight: 150;
 		margin-top: 0;
@@ -145,6 +145,33 @@
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
+		}
+	}
+
+	.rainbow_text_animated {
+		background: linear-gradient(
+			to right,
+			#6666ff,
+			#0099ff,
+			#00ff00,
+			#ff3399,
+			#6666ff
+		);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		animation: rainbow_animation 6s ease-in-out infinite;
+		background-size: 400% 100%;
+	}
+
+	@keyframes rainbow_animation {
+		0%,
+		100% {
+			background-position: 0 0;
+		}
+
+		50% {
+			background-position: 100% 0;
 		}
 	}
 </style>
