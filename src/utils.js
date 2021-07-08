@@ -4,4 +4,7 @@ const sleep = (milliseconds) => {
 
 const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
-export { sleep, capitalize };
+export {
+    sleep,
+    capitalize
+};

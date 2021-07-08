@@ -1,5 +1,4 @@
-export default [
-    {
+export default [{
         "_id": "5d351fff587d840017591f3d",
         "user": "ANDREW",
         "quote": "\"Tree-time!\" ~Andrew"
