@@ -148,7 +148,7 @@
 		}
 	}
 
-	.rainbow_text_animated {
+	/* .rainbow_text_animated {
 		background: linear-gradient(
 			to right,
 			#6666ff,
@@ -162,7 +162,7 @@
 		color: transparent;
 		animation: rainbow_animation 6s ease-in-out infinite;
 		background-size: 400% 100%;
-	}
+	} */
 
 	@keyframes rainbow_animation {
 		0%,

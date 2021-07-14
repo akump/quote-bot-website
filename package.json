@@ -6,8 +6,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "node server.js",
-    "deploy": "gcloud app deploy",
-    "get-project": "gcloud config get-value project"
+    "surge": "npm run build && surge public quote-bot.surge.sh"
   },
   "type": "module",
   "devDependencies": {
