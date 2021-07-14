@@ -63,7 +63,7 @@
 </script>
 
 <main>
-	<h1 class="rainbow rainbow_text_animated">Quote Bot</h1>
+	<h1>Quote Bot</h1>
 
 	{#await getRandomQuote()}
 		<p>&nbsp</p>
