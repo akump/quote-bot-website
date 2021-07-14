@@ -126,7 +126,7 @@
 	}
 
 	h1 {
-		/* color: #b10bb1; */
+		color: #b10bb1;
 		font-size: 4em;
 		font-weight: 150;
 		margin-top: 0;
