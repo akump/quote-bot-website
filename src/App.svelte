@@ -2,6 +2,20 @@
 	import { Circle } from "svelte-loading-spinners";
 	import { sleep, capitalize } from "./utils.js";
 	import { fade } from "svelte/transition";
+	const monthNames = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
 
 	let selected;
 	const options = ["name - Not case sensitive", "quote - Case sensitive"];
@@ -40,7 +54,7 @@
 		}
 		const randomQuote =
 			allQuotes[Math.floor(Math.random() * allQuotes.length - 1)];
-		return randomQuote.quote;
+		return randomQuote;
 	};
 
 	const findQuotes = async function () {
@@ -60,6 +74,14 @@
 		}
 		loading = false;
 	};
+
+	const getDateTooltip = function ({ timestamp }) {
+		const parsedDate = new Date(timestamp);
+		const month = monthNames[parsedDate.getMonth()];
+		const day = parsedDate.getDate();
+		const year = parsedDate.getFullYear();
+		return `Added ${month} ${day}, ${year}`;
+	};
 </script>
 
 <main>
@@ -67,8 +89,10 @@
 
 	{#await getRandomQuote()}
 		<p>&nbsp</p>
-	{:then quote}
-		<p transition:fade>{quote}</p>
+	{:then quoteEntry}
+		<p title={getDateTooltip(quoteEntry)} transition:fade>
+			{quoteEntry.quote}
+		</p>
 	{/await}
 
 	<div class="thin-line" />
@@ -110,7 +134,7 @@
 		{/if}
 		<ol>
 			{#each allUsersQuotes as entry}
-				<li>{entry.quote}</li>
+				<li title={getDateTooltip(entry)}>{entry.quote}</li>
 			{/each}
 		</ol>
 	{:else if loading}

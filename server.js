@@ -1,7 +1,9 @@
 import express from 'express';
-import { resolve } from 'path';
+import {
+    resolve
+} from 'path';
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 5001;
 
 app.use(express.static('public'));
 
