@@ -28,7 +28,7 @@
 	let twoYearOldQuotes = [];
 
 	if (!radioSelection) {
-		localStorage.setItem("radioSelection", "name - Not case sensitive");
+		localStorage.setItem("radioSelection", "name");
 		selected = "name";
 	} else {
 		selected = radioSelection;
