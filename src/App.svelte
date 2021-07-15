@@ -189,7 +189,7 @@
 						name="input"
 						bind:value={input}
 					/>
-					<button type="submit"> Go </button>
+					<button class="wide-go" type="submit"> Go </button>
 				</label>
 			</form>
 
@@ -251,7 +251,9 @@
 						bind:value={endDateInput}
 					/>
 				</label>
-				<button class="date-search-button" type="submit"> Go </button>
+				<button class="date-search-button wide-go" type="submit">
+					Go
+				</button>
 			</form>
 
 			{#if quotesInTimeframe}
@@ -426,8 +428,7 @@
 		align-self: flex-end;
 	}
 
-	.thin-line {
-		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-		margin-bottom: 20px;
+	.wide-go {
+		width: 50px;
 	}
 </style>
