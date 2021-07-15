@@ -216,7 +216,7 @@
 					<h4 class="found-header">Found 1 quote</h4>
 				{:else if quotesInTimeframe.length > 0}
 					<h4 class="found-header">
-						Found {quotesInTimeframe.length} quote
+						Found {quotesInTimeframe.length} quotes
 					</h4>
 				{:else}
 					<h4>Error finding quotes</h4>
