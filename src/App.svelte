@@ -1,5 +1,8 @@
 <script>
+	import RandomQuote from "./RandomQuote.svelte";
 	import { Circle } from "svelte-loading-spinners";
+
+	import { onMount } from "svelte";
 	import {
 		sleep,
 		capitalize,
@@ -8,7 +11,6 @@
 		isValidDate,
 		callQuoteApi,
 	} from "./utils.js";
-	import { fade } from "svelte/transition";
 	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 	import Toggle from "svelte-toggle";
 
@@ -20,7 +22,7 @@
 	let input = "";
 	let allUsersQuotes;
 	let quotesInTimeframe;
-	let loading;
+	let loading = false;
 	let searchQuery = "";
 	let startDateInput = "7/1/2019";
 	let endDateInput = "12/31/2021";
@@ -33,22 +35,6 @@
 	} else {
 		selected = radioSelection;
 	}
-
-	const getRandomQuote = async function () {
-		let allQuotes;
-		let cachedQuotes = localStorage.getItem("quotes");
-		if (!cachedQuotes) {
-			allQuotes = await callQuoteApi();
-			const stringifiedQuotes = JSON.stringify(allQuotes, null, 2);
-			localStorage.setItem("quotes", stringifiedQuotes);
-		} else {
-			const objQuotes = JSON.parse(cachedQuotes, null, 2);
-			allQuotes = objQuotes;
-		}
-		const randomQuote =
-			allQuotes[Math.floor(Math.random() * allQuotes.length - 1)];
-		return randomQuote;
-	};
 
 	const findQuotes = async function () {
 		loading = true;
@@ -138,19 +124,15 @@
 		oneYearOldQuotes = await getQuotesFromYearsAgo("2020");
 		twoYearOldQuotes = await getQuotesFromYearsAgo("2019");
 	})();
+
+	onMount(async () => {
+		document.getElementById("svelte-tabs-2").click();
+	});
 </script>
 
 <main>
 	<h1>Quote Bot</h1>
-
-	{#await getRandomQuote()}
-		<p>&nbsp</p>
-	{:then quoteEntry}
-		<p transition:fade>
-			{quoteEntry.quote}
-		</p>
-	{/await}
-
+	<RandomQuote />
 	<Tabs>
 		<TabList>
 			<Tab>Text Search</Tab>
