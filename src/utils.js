@@ -35,21 +35,21 @@ const isValidDate = function (d) {
     return d instanceof Date && !isNaN(d);
 };
 
-const callQuoteApi = async function (queryName, searchQuery) {
+const callQuoteApi = async function (queryName, searchQuery = '') {
     if (!queryName && !searchQuery) {
         const getQuotesRes = await fetch(
             `https://quote-test-app.herokuapp.com/quotes?$`
         );
         const json = await getQuotesRes.json();
         return json.results;
-    } else if (queryName && searchQuery) {
+    } else if (queryName) {
         const getQuotesRes = await fetch(
             `https://quote-test-app.herokuapp.com/quotes?${queryName}=${searchQuery}`
         );
         const json = await getQuotesRes.json();
         return json.results;
     } else {
-        throw new Error("queryName and searchQuery must be passed or not passed at all");
+        throw new Error("Unable to call quote api");
     }
 }
 

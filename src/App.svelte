@@ -54,8 +54,8 @@
 		searchQuery = input;
 		try {
 			let queryName = selected.split("-")[0].trim();
-			await sleep(500);
 			allUsersQuotes = await callQuoteApi(queryName, searchQuery);
+			await sleep(500);
 		} catch {
 			allUsersQuotes = [];
 		}
