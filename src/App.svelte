@@ -125,6 +125,7 @@
 			foundQuotes = objQuotes;
 		}
 		const now = new Date();
+		// now.getDate()
 		const startDate = new Date(year, now.getMonth(), now.getDate());
 		const endDate = new Date(year, now.getMonth(), now.getDate());
 		endDate.setUTCHours(23, 59, 59, 999);
@@ -284,33 +285,47 @@
 			{/if}
 		</TabPanel>
 		<TabPanel>
-			<p>1 year old quotes</p>
-			<ol>
-				{#each oneYearOldQuotes as entry}
-					<li>
-						<div class="quote-container">
-							<p class="quote-text">{entry.quote}</p>
-							<p class="quote-date">
-								{getDateFromText(entry.timestamp)}
-							</p>
-						</div>
-					</li>
-				{/each}
-			</ol>
+			<h4 class="found-header">1 year old quotes</h4>
+			{#if oneYearOldQuotes.length === 0}
+				<p>No quotes found</p>
+			{:else if oneYearOldQuotes.length > 0}
+				<ol>
+					{#each oneYearOldQuotes as entry}
+						<li>
+							<div class="quote-container">
+								<p class="quote-text">{entry.quote}</p>
+								<p class="quote-date">
+									{getDateFromText(entry.timestamp)}
+								</p>
+							</div>
+						</li>
+					{/each}
+				</ol>
+			{:else}
+				<h4>Error finding quotes</h4>
+			{/if}
 
-			<p>2 year old quotes</p>
-			<ol>
-				{#each twoYearOldQuotes as entry}
-					<li>
-						<div class="quote-container">
-							<p class="quote-text">{entry.quote}</p>
-							<p class="quote-date">
-								{getDateFromText(entry.timestamp)}
-							</p>
-						</div>
-					</li>
-				{/each}
-			</ol>
+			<br />
+
+			<h4 class="found-header">2 year old quotes</h4>
+			{#if twoYearOldQuotes.length === 0}
+				<p>No quotes found</p>
+			{:else if twoYearOldQuotes.length > 0}
+				<ol>
+					{#each twoYearOldQuotes as entry}
+						<li>
+							<div class="quote-container">
+								<p class="quote-text">{entry.quote}</p>
+								<p class="quote-date">
+									{getDateFromText(entry.timestamp)}
+								</p>
+							</div>
+						</li>
+					{/each}
+				</ol>
+			{:else}
+				<h4>Error finding quotes</h4>
+			{/if}
 		</TabPanel>
 	</Tabs>
 </main>
@@ -402,5 +417,10 @@
 	}
 	.date-form {
 		display: flex;
+	}
+
+	.thin-line {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+		margin-bottom: 20px;
 	}
 </style>
