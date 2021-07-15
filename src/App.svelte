@@ -24,6 +24,8 @@
 	let searchQuery = "";
 	let startDateInput = "7/1/2019";
 	let endDateInput = "12/31/2021";
+	let oneYearOldQuotes = [];
+	let twoYearOldQuotes = [];
 
 	if (!radioSelection) {
 		localStorage.setItem("radioSelection", "name - Not case sensitive");
@@ -62,11 +64,31 @@
 		loading = false;
 	};
 
+	const getQuoteBetweenDates = function (quote, startDate, endDate) {
+		const { timestamp } = quote;
+		const currQuoteDate = new Date(timestamp);
+		if (currQuoteDate > startDate && currQuoteDate < endDate) {
+			return quote;
+		}
+	};
+
 	const dateSearch = async function () {
 		loading = true;
 		quotesInTimeframe = null;
-		const [startMonth, startDay, startYear] = startDateInput.split("/");
-		const [endMonth, endDay, endYear] = endDateInput.split("/");
+		let [startMonth, startDay, startYear] = startDateInput.split("/");
+		let [endMonth, endDay, endYear] = endDateInput.split("/");
+
+		if (startDateInput === "") {
+			startMonth = "7";
+			startDay = "1";
+			startYear = "2019";
+		}
+		if (endDateInput === "") {
+			endMonth = "12";
+			endDay = "31";
+			endYear = "2022";
+		}
+
 		const startDate = new Date(
 			startYear,
 			parseInt(startMonth) - 1,
@@ -81,18 +103,40 @@
 
 		if (!isValidDate(startDate) || !isValidDate(endDate)) {
 			loading = false;
+			quotesInTimeframe = [];
 			return;
 		}
 		const allQuotes = await callQuoteApi();
-		quotesInTimeframe = allQuotes.filter((entry) => {
-			const { timestamp } = entry;
-			const currQuoteDate = new Date(timestamp);
-			if (currQuoteDate > startDate && currQuoteDate < endDate) {
-				return entry;
-			}
-		});
+		quotesInTimeframe = allQuotes.filter((entry) =>
+			getQuoteBetweenDates(entry, startDate, endDate)
+		);
 		loading = false;
 	};
+
+	const getQuotesFromYearsAgo = async function (year = "2019") {
+		let cachedQuotes = localStorage.getItem("quotes");
+		let foundQuotes;
+		if (!cachedQuotes) {
+			foundQuotes = await callQuoteApi();
+			const stringifiedQuotes = JSON.stringify(allQuotes, null, 2);
+			localStorage.setItem("quotes", stringifiedQuotes);
+		} else {
+			const objQuotes = JSON.parse(cachedQuotes, null, 2);
+			foundQuotes = objQuotes;
+		}
+		const now = new Date();
+		const startDate = new Date(year, now.getMonth(), now.getDate());
+		const endDate = new Date(year, now.getMonth(), now.getDate());
+		endDate.setUTCHours(23, 59, 59, 999);
+		return foundQuotes.filter((entry) =>
+			getQuoteBetweenDates(entry, startDate, endDate)
+		);
+	};
+
+	(async function () {
+		oneYearOldQuotes = await getQuotesFromYearsAgo("2020");
+		twoYearOldQuotes = await getQuotesFromYearsAgo("2019");
+	})();
 </script>
 
 <main>
@@ -110,6 +154,7 @@
 		<TabList>
 			<Tab>Text Search</Tab>
 			<Tab>Date Search</Tab>
+			<Tab>Analytics</Tab>
 		</TabList>
 
 		<TabPanel>
@@ -224,24 +269,47 @@
 				<ol>
 					{#each quotesInTimeframe as entry}
 						<li>
-							{#if toggled}
-								<div class="quote-container">
-									<p class="quote-text">{entry.quote}</p>
-									<p class="quote-date">
-										{getDateFromText(entry.timestamp)}
-									</p>
-								</div>
-							{:else}
-								<div class="quote-no-date">
-									<p class="quote-text">{entry.quote}</p>
-								</div>
-							{/if}
+							<div class="quote-container">
+								<p class="quote-text">{entry.quote}</p>
+								<p class="quote-date">
+									{getDateFromText(entry.timestamp)}
+								</p>
+							</div>
 						</li>
 					{/each}
 				</ol>
 			{:else if loading}
 				<Circle size="30" color="#b10bb1" unit="px" duration="1s" />
 			{/if}
+		</TabPanel>
+		<TabPanel>
+			<p>1 year old quotes</p>
+			<ol>
+				{#each oneYearOldQuotes as entry}
+					<li>
+						<div class="quote-container">
+							<p class="quote-text">{entry.quote}</p>
+							<p class="quote-date">
+								{getDateFromText(entry.timestamp)}
+							</p>
+						</div>
+					</li>
+				{/each}
+			</ol>
+
+			<p>2 year old quotes</p>
+			<ol>
+				{#each twoYearOldQuotes as entry}
+					<li>
+						<div class="quote-container">
+							<p class="quote-text">{entry.quote}</p>
+							<p class="quote-date">
+								{getDateFromText(entry.timestamp)}
+							</p>
+						</div>
+					</li>
+				{/each}
+			</ol>
 		</TabPanel>
 	</Tabs>
 </main>

@@ -36,21 +36,13 @@ const isValidDate = function (d) {
 };
 
 const callQuoteApi = async function (queryName, searchQuery = '') {
-    if (!queryName && !searchQuery) {
-        const getQuotesRes = await fetch(
-            `https://quote-test-app.herokuapp.com/quotes?`
-        );
-        const json = await getQuotesRes.json();
-        return json.results;
-    } else if (queryName) {
-        const getQuotesRes = await fetch(
-            `https://quote-test-app.herokuapp.com/quotes?${queryName}=${searchQuery}`
-        );
-        const json = await getQuotesRes.json();
-        return json.results;
-    } else {
-        throw new Error("Unable to call quote api");
+    let url = `https://quote-test-app.herokuapp.com/quotes?`;
+    if (queryName) {
+        url = `https://quote-test-app.herokuapp.com/quotes?${queryName}=${searchQuery}`;
     }
+    const getQuotesRes = await fetch(url);
+    const json = await getQuotesRes.json();
+    return json.results;
 }
 
 export {
