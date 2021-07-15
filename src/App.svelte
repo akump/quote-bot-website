@@ -80,8 +80,9 @@
 		const endDate = new Date(
 			endYear,
 			parseInt(endMonth) - 1,
-			parseInt(endDay) + 1
+			parseInt(endDay)
 		);
+		endDate.setUTCHours(23, 59, 59, 999);
 
 		if (!isValidDate(startDate) || !isValidDate(endDate)) {
 			quotesInTimeframe = [];
