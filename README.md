@@ -12,3 +12,4 @@ Front end for Memecenter's [quote bot](https://github.com/SpoonDoctor/QuoteBot).
   * Day with most quotes added
   * Entire quote count for each user
   * Largest amount of time with no quotes added
+* Update readme screenshot
