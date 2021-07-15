@@ -19,8 +19,22 @@ const monthNames = [
     "December",
 ];
 
+const getDateFromText = function (date) {
+    const parsedDate = new Date(date);
+    const month = parsedDate.getMonth();
+    const day = parsedDate.getDate();
+    const year = parsedDate.getFullYear();
+    return `${month}/${day}/${year}`;
+};
+
+const handleRadio = function (e) {
+    localStorage.setItem("radioSelection", e.target.defaultValue);
+};
+
 export {
     sleep,
     capitalize,
-    monthNames
+    monthNames,
+    getDateFromText,
+    handleRadio
 };

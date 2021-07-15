@@ -1,6 +1,11 @@
 <script>
 	import { Circle } from "svelte-loading-spinners";
-	import { sleep, capitalize, monthNames } from "./utils.js";
+	import {
+		sleep,
+		capitalize,
+		getDateFromText,
+		handleRadio,
+	} from "./utils.js";
 	import { fade } from "svelte/transition";
 	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 	import Toggle from "svelte-toggle";
@@ -9,6 +14,10 @@
 	let selected;
 	const options = ["name - Not case sensitive", "quote - Case sensitive"];
 	const radioSelection = localStorage.getItem("radioSelection");
+	let input = "";
+	let allUsersQuotes;
+	let loading;
+	let searchQuery = "";
 
 	if (!radioSelection) {
 		localStorage.setItem("radioSelection", "name - Not case sensitive");
@@ -16,15 +25,6 @@
 	} else {
 		selected = radioSelection;
 	}
-
-	const handleRadio = function (e) {
-		localStorage.setItem("radioSelection", e.target.defaultValue);
-	};
-
-	let input = "";
-	let allUsersQuotes;
-	let loading;
-	let searchQuery = "";
 
 	const getRandomQuote = async function () {
 		let allQuotes;
@@ -62,14 +62,6 @@
 			allUsersQuotes = [];
 		}
 		loading = false;
-	};
-
-	const getDateFromText = function (date) {
-		const parsedDate = new Date(date);
-		const month = parsedDate.getMonth();
-		const day = parsedDate.getDate();
-		const year = parsedDate.getFullYear();
-		return `${month}/${day}/${year}`;
 	};
 </script>
 
