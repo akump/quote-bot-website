@@ -182,11 +182,6 @@
 		margin-bottom: 0;
 	}
 
-	/* .thin-line {
-		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-		margin-bottom: 20px;
-	} */
-
 	.radio-button {
 		margin-right: 5px;
 	}
