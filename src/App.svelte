@@ -1,22 +1,11 @@
 <script>
 	import { Circle } from "svelte-loading-spinners";
-	import { sleep, capitalize } from "./utils.js";
+	import { sleep, capitalize, monthNames } from "./utils.js";
 	import { fade } from "svelte/transition";
-	const monthNames = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-	];
+	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
+	import Toggle from "svelte-toggle";
 
+	let toggled;
 	let selected;
 	const options = ["name - Not case sensitive", "quote - Case sensitive"];
 	const radioSelection = localStorage.getItem("radioSelection");
@@ -75,12 +64,12 @@
 		loading = false;
 	};
 
-	const getDateTooltip = function ({ timestamp }) {
-		const parsedDate = new Date(timestamp);
-		const month = monthNames[parsedDate.getMonth()];
+	const getDateFromText = function (date) {
+		const parsedDate = new Date(date);
+		const month = parsedDate.getMonth();
 		const day = parsedDate.getDate();
 		const year = parsedDate.getFullYear();
-		return `Added ${month} ${day}, ${year}`;
+		return `${month}/${day}/${year}`;
 	};
 </script>
 
@@ -90,56 +79,92 @@
 	{#await getRandomQuote()}
 		<p>&nbsp</p>
 	{:then quoteEntry}
-		<p title={getDateTooltip(quoteEntry)} transition:fade>
+		<p transition:fade>
 			{quoteEntry.quote}
 		</p>
 	{/await}
 
-	<div class="thin-line" />
+	<Tabs>
+		<TabList>
+			<Tab>Text Search</Tab>
+			<Tab>Date Search</Tab>
+		</TabList>
 
-	{#each options as value}
-		<label
-			><input
-				class="radio-button"
-				type="radio"
-				{value}
-				bind:group={selected}
-				on:click|once={handleRadio}
-			/>{capitalize(value)}</label
-		>
-	{/each}
-
-	<form on:submit|preventDefault={findQuotes}>
-		<label for="imageNum"
-			>Find quotes: <input
-				style="width: 150px"
-				type="text"
-				id="input"
-				name="input"
-				bind:value={input}
-			/>
-			<button type="submit"> Go </button>
-		</label>
-	</form>
-
-	{#if allUsersQuotes}
-		{#if allUsersQuotes.length === 0}
-			<h4>No quotes found</h4>
-		{:else if allUsersQuotes.length === 1}
-			<h4>Found 1 quote for "{searchQuery}"</h4>
-		{:else if allUsersQuotes.length > 0}
-			<h4>Found {allUsersQuotes.length} quotes for "{searchQuery}"</h4>
-		{:else}
-			<h4>Error finding quotes</h4>
-		{/if}
-		<ol>
-			{#each allUsersQuotes as entry}
-				<li title={getDateTooltip(entry)}>{entry.quote}</li>
+		<TabPanel>
+			{#each options as value}
+				<label
+					><input
+						class="radio-button"
+						type="radio"
+						{value}
+						bind:group={selected}
+						on:click|once={handleRadio}
+					/>{capitalize(value)}</label
+				>
 			{/each}
-		</ol>
-	{:else if loading}
-		<Circle size="30" color="#b10bb1" unit="px" duration="1s" />
-	{/if}
+
+			<div class="toggle-label">Show date quote was added</div>
+			<Toggle
+				bind:toggled
+				hideLabel
+				toggledColor="#b10bb1"
+				label="Show date added?"
+			/>
+
+			<form on:submit|preventDefault={findQuotes}>
+				<label for="imageNum"
+					>Find quotes: <input
+						style="width: 150px"
+						type="text"
+						id="input"
+						name="input"
+						bind:value={input}
+					/>
+					<button type="submit"> Go </button>
+				</label>
+			</form>
+
+			{#if allUsersQuotes}
+				{#if allUsersQuotes.length === 0}
+					<h4 class="found-header">No quotes found</h4>
+				{:else if allUsersQuotes.length === 1}
+					<h4 class="found-header">
+						Found 1 quote for "{searchQuery}"
+					</h4>
+				{:else if allUsersQuotes.length > 0}
+					<h4 class="found-header">
+						Found {allUsersQuotes.length} quotes for "{searchQuery}"
+					</h4>
+				{:else}
+					<h4>Error finding quotes</h4>
+				{/if}
+				<ol>
+					{#each allUsersQuotes as entry}
+						<li>
+							{#if toggled}
+								<div class="quote-container">
+									<p class="quote-text">{entry.quote}</p>
+									<p class="quote-date">
+										{getDateFromText(entry.timestamp)}
+									</p>
+								</div>
+							{:else}
+								<div class="quote-no-date">
+									<p class="quote-text">{entry.quote}</p>
+								</div>
+							{/if}
+						</li>
+					{/each}
+				</ol>
+			{:else if loading}
+				<Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+			{/if}
+		</TabPanel>
+
+		<TabPanel>
+			<h2>Under construction</h2>
+		</TabPanel>
+	</Tabs>
 </main>
 
 <style>
@@ -157,10 +182,10 @@
 		margin-bottom: 0;
 	}
 
-	.thin-line {
+	/* .thin-line {
 		border-bottom: 1px solid rgba(255, 255, 255, 0.25);
 		margin-bottom: 20px;
-	}
+	} */
 
 	.radio-button {
 		margin-right: 5px;
@@ -197,5 +222,35 @@
 		50% {
 			background-position: 100% 0;
 		}
+	}
+	.quote-container {
+		display: flex;
+		margin-bottom: 10px;
+	}
+	.quote-text {
+		flex-basis: 80%;
+		margin: 0;
+	}
+
+	.quote-date {
+		margin: 0;
+	}
+
+	.toggle-label {
+		margin-bottom: 5px;
+	}
+
+	.quote-no-date {
+		display: flex;
+		margin-bottom: 10px;
+	}
+
+	.quote-no-date .quote-text {
+		flex-basis: 100%;
+		margin: 0;
+	}
+
+	.found-header {
+		margin: 5px 5px 5px 0;
 	}
 </style>
