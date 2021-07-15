@@ -250,8 +250,10 @@
 						name="endDateInput"
 						bind:value={endDateInput}
 					/>
-					<button type="submit"> Search </button>
 				</label>
+				<button class="date-search-button" type="submit">
+					Search
+				</button>
 			</form>
 
 			{#if quotesInTimeframe}
@@ -413,10 +415,17 @@
 	}
 
 	.date-label {
+		flex-basis: 150px;
 		margin-right: 5px;
 	}
 	.date-form {
 		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.date-search-button {
+		height: 33px;
+		align-self: flex-end;
 	}
 
 	.thin-line {
