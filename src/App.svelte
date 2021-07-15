@@ -5,19 +5,24 @@
 		capitalize,
 		getDateFromText,
 		handleRadio,
+		isValidDate,
 	} from "./utils.js";
 	import { fade } from "svelte/transition";
 	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 	import Toggle from "svelte-toggle";
 
-	let toggled;
-	let selected;
 	const options = ["name - Not case sensitive", "quote - Case sensitive"];
 	const radioSelection = localStorage.getItem("radioSelection");
+
+	let toggled;
+	let selected;
 	let input = "";
 	let allUsersQuotes;
+	let quotesInTimeframe;
 	let loading;
 	let searchQuery = "";
+	let startDateInput = "7/1/2019";
+	let endDateInput = "12/31/2021";
 
 	if (!radioSelection) {
 		localStorage.setItem("radioSelection", "name - Not case sensitive");
@@ -62,6 +67,39 @@
 			allUsersQuotes = [];
 		}
 		loading = false;
+	};
+
+	const dateSearch = async function () {
+		const [startMonth, startDay, startYear] = startDateInput.split("/");
+		const [endMonth, endDay, endYear] = endDateInput.split("/");
+		const startDate = new Date(
+			startYear,
+			parseInt(startMonth) - 1,
+			startDay
+		);
+		const endDate = new Date(
+			endYear,
+			parseInt(endMonth) - 1,
+			parseInt(endDay) + 1
+		);
+
+		if (!isValidDate(startDate) || !isValidDate(endDate)) {
+			quotesInTimeframe = [];
+			return;
+		}
+
+		const getQuotesRes = await fetch(
+			`https://quote-test-app.herokuapp.com/quotes?`
+		);
+		const json = await getQuotesRes.json();
+		const allQuotes = json.results;
+		quotesInTimeframe = allQuotes.filter((entry) => {
+			const { timestamp } = entry;
+			const currQuoteDate = new Date(timestamp);
+			if (currQuoteDate > startDate && currQuoteDate < endDate) {
+				return entry;
+			}
+		});
 	};
 </script>
 
@@ -154,7 +192,62 @@
 		</TabPanel>
 
 		<TabPanel>
-			<h2>Under construction</h2>
+			<h4>Dates should be formatted month/day/year</h4>
+			<form class="date-form" on:submit|preventDefault={dateSearch}>
+				<label class="date-label"
+					>Start date <input
+						style="width: 150px"
+						type="text"
+						id="startDateInput"
+						name="startDateInput"
+						bind:value={startDateInput}
+					/>
+				</label>
+				<label class="date-label"
+					>End date <input
+						style="width: 150px"
+						type="text"
+						id="endDateInput"
+						name="endDateInput"
+						bind:value={endDateInput}
+					/>
+					<button type="submit"> Search </button>
+				</label>
+			</form>
+
+			{#if quotesInTimeframe}
+				{#if quotesInTimeframe.length === 0}
+					<h4 class="found-header">
+						No quotes found. Are your dates formatted correctly?
+					</h4>
+				{:else if quotesInTimeframe.length === 1}
+					<h4 class="found-header">Found 1 quote</h4>
+				{:else if quotesInTimeframe.length > 0}
+					<h4 class="found-header">
+						Found {quotesInTimeframe.length} quote
+					</h4>
+				{:else}
+					<h4>Error finding quotes</h4>
+				{/if}
+				<ol>
+					{#each quotesInTimeframe as entry}
+						<li>
+							{#if toggled}
+								<div class="quote-container">
+									<p class="quote-text">{entry.quote}</p>
+									<p class="quote-date">
+										{getDateFromText(entry.timestamp)}
+									</p>
+								</div>
+							{:else}
+								<div class="quote-no-date">
+									<p class="quote-text">{entry.quote}</p>
+								</div>
+							{/if}
+						</li>
+					{/each}
+				</ol>
+			{/if}
 		</TabPanel>
 	</Tabs>
 </main>
@@ -239,5 +332,12 @@
 
 	.found-header {
 		margin: 5px 5px 5px 0;
+	}
+
+	.date-label {
+		margin-right: 5px;
+	}
+	.date-form {
+		display: flex;
 	}
 </style>
