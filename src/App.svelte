@@ -12,7 +12,7 @@
 	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 	import Toggle from "svelte-toggle";
 
-	const options = ["name - Not case sensitive", "quote - Case sensitive"];
+	const options = ["name", "quote"];
 	const radioSelection = localStorage.getItem("radioSelection");
 
 	let toggled;
@@ -29,7 +29,7 @@
 
 	if (!radioSelection) {
 		localStorage.setItem("radioSelection", "name - Not case sensitive");
-		selected = "name - Not case sensitive";
+		selected = "name";
 	} else {
 		selected = radioSelection;
 	}
@@ -55,7 +55,7 @@
 		allUsersQuotes = null;
 		searchQuery = input;
 		try {
-			let queryName = selected.split("-")[0].trim();
+			let queryName = selected;
 			allUsersQuotes = await callQuoteApi(queryName, searchQuery);
 			await sleep(500);
 		} catch {
@@ -154,10 +154,11 @@
 		<TabList>
 			<Tab>Text Search</Tab>
 			<Tab>Date Search</Tab>
-			<Tab>Analytics</Tab>
+			<Tab>Timehop</Tab>
 		</TabList>
 
 		<TabPanel>
+			<div class="label">Search type</div>
 			{#each options as value}
 				<label
 					><input
@@ -170,7 +171,7 @@
 				>
 			{/each}
 
-			<div class="toggle-label">Show date quote was added</div>
+			<div class="label">Show date quote was added</div>
 			<Toggle
 				bind:toggled
 				hideLabel
@@ -378,7 +379,7 @@
 		margin: 0;
 	}
 
-	.toggle-label {
+	.label {
 		margin-bottom: 5px;
 	}
 
