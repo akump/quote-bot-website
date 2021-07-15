@@ -38,7 +38,7 @@ const isValidDate = function (d) {
 const callQuoteApi = async function (queryName, searchQuery = '') {
     if (!queryName && !searchQuery) {
         const getQuotesRes = await fetch(
-            `https://quote-test-app.herokuapp.com/quotes?$`
+            `https://quote-test-app.herokuapp.com/quotes?`
         );
         const json = await getQuotesRes.json();
         return json.results;
