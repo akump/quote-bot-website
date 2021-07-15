@@ -251,9 +251,7 @@
 						bind:value={endDateInput}
 					/>
 				</label>
-				<button class="date-search-button" type="submit">
-					Search
-				</button>
+				<button class="date-search-button" type="submit"> Go </button>
 			</form>
 
 			{#if quotesInTimeframe}
