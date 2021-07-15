@@ -6,6 +6,7 @@
 		getDateFromText,
 		handleRadio,
 		isValidDate,
+		callQuoteApi,
 	} from "./utils.js";
 	import { fade } from "svelte/transition";
 	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
@@ -35,11 +36,7 @@
 		let allQuotes;
 		let cachedQuotes = localStorage.getItem("quotes");
 		if (!cachedQuotes) {
-			const getQuotesRes = await fetch(
-				`https://quote-test-app.herokuapp.com/quotes?name=`
-			);
-			const json = await getQuotesRes.json();
-			allQuotes = json.results;
+			allQuotes = await callQuoteApi();
 			const stringifiedQuotes = JSON.stringify(allQuotes, null, 2);
 			localStorage.setItem("quotes", stringifiedQuotes);
 		} else {
@@ -57,12 +54,8 @@
 		searchQuery = input;
 		try {
 			let queryName = selected.split("-")[0].trim();
-			const getQuotesRes = await fetch(
-				`https://quote-test-app.herokuapp.com/quotes?${queryName}=${searchQuery}`
-			);
-			const json = await getQuotesRes.json();
 			await sleep(500);
-			allUsersQuotes = json.results;
+			allUsersQuotes = await callQuoteApi(queryName, searchQuery);
 		} catch {
 			allUsersQuotes = [];
 		}
@@ -70,6 +63,8 @@
 	};
 
 	const dateSearch = async function () {
+		loading = true;
+		quotesInTimeframe = null;
 		const [startMonth, startDay, startYear] = startDateInput.split("/");
 		const [endMonth, endDay, endYear] = endDateInput.split("/");
 		const startDate = new Date(
@@ -85,15 +80,10 @@
 		endDate.setUTCHours(23, 59, 59, 999);
 
 		if (!isValidDate(startDate) || !isValidDate(endDate)) {
-			quotesInTimeframe = [];
+			loading = false;
 			return;
 		}
-
-		const getQuotesRes = await fetch(
-			`https://quote-test-app.herokuapp.com/quotes?`
-		);
-		const json = await getQuotesRes.json();
-		const allQuotes = json.results;
+		const allQuotes = await callQuoteApi();
 		quotesInTimeframe = allQuotes.filter((entry) => {
 			const { timestamp } = entry;
 			const currQuoteDate = new Date(timestamp);
@@ -101,6 +91,7 @@
 				return entry;
 			}
 		});
+		loading = false;
 	};
 </script>
 
@@ -248,6 +239,8 @@
 						</li>
 					{/each}
 				</ol>
+			{:else if loading}
+				<Circle size="30" color="#b10bb1" unit="px" duration="1s" />
 			{/if}
 		</TabPanel>
 	</Tabs>
