@@ -1,5 +1,6 @@
 <script>
     import { callQuoteApi, getQuoteBetweenDates } from "./utils.js";
+    import { onMount } from "svelte";
 
     let oneYearOldQuotes = [];
     let twoYearOldQuotes = [];
@@ -24,10 +25,10 @@
         );
     };
 
-    (async function () {
+    onMount(async () => {
         oneYearOldQuotes = await getQuotesFromYearsAgo("2020");
         twoYearOldQuotes = await getQuotesFromYearsAgo("2019");
-    })();
+    });
 </script>
 
 <h4 class="found-header">1 year ago today</h4>
