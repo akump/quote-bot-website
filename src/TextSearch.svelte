@@ -152,9 +152,15 @@
     .options-container {
         display: flex;
         margin-bottom: 5px;
+        padding-bottom: 5px;
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.25); */
     }
     .option-type {
-        flex: 1;
+        flex: 0 0 auto;
+        margin-right: 1rem;
+        padding-right: 1rem;
+
+        border-right: 1px solid rgba(255, 255, 255, 0.25);
     }
     .option-date {
         flex: 1;
