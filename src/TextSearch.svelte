@@ -1,6 +1,9 @@
+<svelte:options immutable={false} accessors={true} />
+
 <script>
     import { Circle } from "svelte-loading-spinners";
     import Toggle from "svelte-toggle";
+    import { onMount } from "svelte";
     import {
         sleep,
         capitalize,
@@ -9,7 +12,8 @@
         callQuoteApi,
     } from "./utils.js";
 
-    let toggled;
+    let toggleElement;
+    let dateToggle;
     let selected;
     let input = "";
     let allUsersQuotes;
@@ -39,6 +43,26 @@
         }
         loading = false;
     };
+
+    const isTrue = (val) => val === "true";
+
+    const setToggleLocalStorage = function (e) {
+        const toggleValue = localStorage.getItem("dateToggle");
+        localStorage.setItem("dateToggle", !isTrue(toggleValue));
+        dateToggle = !isTrue(toggleValue);
+    };
+
+    onMount(() => {
+        dateToggle = localStorage.getItem("dateToggle");
+        if (dateToggle === null) {
+            localStorage.setItem("dateToggle", true);
+            dateToggle = true;
+        }
+        if (typeof dateToggle !== "boolean") {
+            dateToggle = isTrue(dateToggle);
+        }
+        toggleElement.$set({ toggled: dateToggle });
+    });
 </script>
 
 <div class="label">Search type</div>
@@ -56,7 +80,9 @@
 
 <div class="label">Show date quote was added</div>
 <Toggle
-    bind:toggled
+    bind:dateToggle
+    on:click={setToggleLocalStorage}
+    bind:this={toggleElement}
     hideLabel
     toggledColor="#b10bb1"
     label="Show date added?"
@@ -92,7 +118,7 @@
     <ol>
         {#each allUsersQuotes as entry}
             <li>
-                {#if toggled}
+                {#if dateToggle}
                     <div class="quote-container">
                         <p class="quote-text">{entry.quote}</p>
                         <p class="quote-date">
