@@ -7,16 +7,16 @@
     } from "./utils";
     import { Circle } from "svelte-loading-spinners";
 
-    let startDateInput = "7/1/2019";
-    let endDateInput = "12/31/2021";
+    let startDateInput = "2019-7-1";
+    let endDateInput = "2021-12-31";
     let loading = false;
     let quotesInTimeframe;
 
     const dateSearch = async function () {
         loading = true;
         quotesInTimeframe = null;
-        let [startMonth, startDay, startYear] = startDateInput.split("/");
-        let [endMonth, endDay, endYear] = endDateInput.split("/");
+        let [startYear, startMonth, startDay] = startDateInput.split("-");
+        let [endYear, endMonth, endDay] = endDateInput.split("-");
 
         if (startDateInput === "") {
             startMonth = "7";
@@ -59,7 +59,7 @@
     <label class="date-label"
         >Start date <input
             style="width: 150px"
-            type="text"
+            type="date"
             id="startDateInput"
             name="startDateInput"
             bind:value={startDateInput}
@@ -68,7 +68,7 @@
     <label class="date-label"
         >End date <input
             style="width: 150px"
-            type="text"
+            type="date"
             id="endDateInput"
             name="endDateInput"
             bind:value={endDateInput}
