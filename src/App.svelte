@@ -3,6 +3,7 @@
 	import DateSearch from "./DateSearch.svelte";
 	import RandomQuote from "./RandomQuote.svelte";
 	import Timehop from "./Timehop.svelte";
+	import Analytics from "./Analytics.svelte";
 	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 </script>
 
@@ -11,9 +12,10 @@
 	<RandomQuote />
 	<Tabs>
 		<TabList>
-			<Tab>Text Search</Tab>
-			<Tab>Date Search</Tab>
+			<Tab>Text</Tab>
+			<Tab>Date</Tab>
 			<Tab>Timehop</Tab>
+			<Tab>Analytics</Tab>
 		</TabList>
 		<TabPanel>
 			<TextSearch />
@@ -23,6 +25,9 @@
 		</TabPanel>
 		<TabPanel>
 			<Timehop />
+		</TabPanel>
+		<TabPanel>
+			<Analytics />
 		</TabPanel>
 	</Tabs>
 </main>
