@@ -1,5 +1,7 @@
 <script>
 	import RandomQuote from "./RandomQuote.svelte";
+	import Timehop from "./Timehop.svelte";
+
 	import { Circle } from "svelte-loading-spinners";
 
 	import { onMount } from "svelte";
@@ -10,6 +12,7 @@
 		handleRadio,
 		isValidDate,
 		callQuoteApi,
+		getQuoteBetweenDates,
 	} from "./utils.js";
 	import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 	import Toggle from "svelte-toggle";
@@ -26,8 +29,6 @@
 	let searchQuery = "";
 	let startDateInput = "7/1/2019";
 	let endDateInput = "12/31/2021";
-	let oneYearOldQuotes = [];
-	let twoYearOldQuotes = [];
 
 	if (!radioSelection) {
 		localStorage.setItem("radioSelection", "name");
@@ -48,14 +49,6 @@
 			allUsersQuotes = [];
 		}
 		loading = false;
-	};
-
-	const getQuoteBetweenDates = function (quote, startDate, endDate) {
-		const { timestamp } = quote;
-		const currQuoteDate = new Date(timestamp);
-		if (currQuoteDate > startDate && currQuoteDate < endDate) {
-			return quote;
-		}
 	};
 
 	const dateSearch = async function () {
@@ -98,36 +91,6 @@
 		);
 		loading = false;
 	};
-
-	const getQuotesFromYearsAgo = async function (year = "2019") {
-		let cachedQuotes = localStorage.getItem("quotes");
-		let foundQuotes;
-		if (!cachedQuotes) {
-			foundQuotes = await callQuoteApi();
-			const stringifiedQuotes = JSON.stringify(allQuotes, null, 2);
-			localStorage.setItem("quotes", stringifiedQuotes);
-		} else {
-			const objQuotes = JSON.parse(cachedQuotes, null, 2);
-			foundQuotes = objQuotes;
-		}
-		const now = new Date();
-		// now.getDate()
-		const startDate = new Date(year, now.getMonth(), now.getDate());
-		const endDate = new Date(year, now.getMonth(), now.getDate());
-		endDate.setUTCHours(23, 59, 59, 999);
-		return foundQuotes.filter((entry) =>
-			getQuoteBetweenDates(entry, startDate, endDate)
-		);
-	};
-
-	(async function () {
-		oneYearOldQuotes = await getQuotesFromYearsAgo("2020");
-		twoYearOldQuotes = await getQuotesFromYearsAgo("2019");
-	})();
-
-	onMount(async () => {
-		document.getElementById("svelte-tabs-2").click();
-	});
 </script>
 
 <main>
@@ -269,47 +232,7 @@
 			{/if}
 		</TabPanel>
 		<TabPanel>
-			<h4 class="found-header">1 year old quotes</h4>
-			{#if oneYearOldQuotes.length === 0}
-				<p>No quotes found</p>
-			{:else if oneYearOldQuotes.length > 0}
-				<ol>
-					{#each oneYearOldQuotes as entry}
-						<li>
-							<div class="quote-container">
-								<p class="quote-text">{entry.quote}</p>
-								<p class="quote-date">
-									{getDateFromText(entry.timestamp)}
-								</p>
-							</div>
-						</li>
-					{/each}
-				</ol>
-			{:else}
-				<h4>Error finding quotes</h4>
-			{/if}
-
-			<br />
-
-			<h4 class="found-header">2 year old quotes</h4>
-			{#if twoYearOldQuotes.length === 0}
-				<p>No quotes found</p>
-			{:else if twoYearOldQuotes.length > 0}
-				<ol>
-					{#each twoYearOldQuotes as entry}
-						<li>
-							<div class="quote-container">
-								<p class="quote-text">{entry.quote}</p>
-								<p class="quote-date">
-									{getDateFromText(entry.timestamp)}
-								</p>
-							</div>
-						</li>
-					{/each}
-				</ol>
-			{:else}
-				<h4>Error finding quotes</h4>
-			{/if}
+			<Timehop />
 		</TabPanel>
 	</Tabs>
 </main>
@@ -390,10 +313,6 @@
 	.quote-no-date .quote-text {
 		flex-basis: 100%;
 		margin: 0;
-	}
-
-	.found-header {
-		margin: 5px 5px 5px 0;
 	}
 
 	.date-label {

@@ -43,7 +43,17 @@ const callQuoteApi = async function (queryName, searchQuery = '') {
     const getQuotesRes = await fetch(url);
     const json = await getQuotesRes.json();
     return json.results;
-}
+};
+
+const getQuoteBetweenDates = function (quote, startDate, endDate) {
+    const {
+        timestamp
+    } = quote;
+    const currQuoteDate = new Date(timestamp);
+    if (currQuoteDate > startDate && currQuoteDate < endDate) {
+        return quote;
+    }
+};
 
 export {
     sleep,
@@ -52,5 +62,6 @@ export {
     getDateFromText,
     handleRadio,
     isValidDate,
-    callQuoteApi
+    callQuoteApi,
+    getQuoteBetweenDates
 };
