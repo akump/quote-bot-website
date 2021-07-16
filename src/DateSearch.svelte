@@ -7,7 +7,7 @@
     } from "./utils";
     import { Circle } from "svelte-loading-spinners";
 
-    let startDateInput = "2019-7-1";
+    let startDateInput = "2019-07-01";
     let endDateInput = "2021-12-31";
     let loading = false;
     let quotesInTimeframe;
