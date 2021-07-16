@@ -1,9 +1,11 @@
 <script>
     import { onMount } from "svelte";
-    import { callQuoteApi } from "./utils.js";
+    import { callQuoteApi, sleep } from "./utils.js";
+    import { Circle } from "svelte-loading-spinners";
 
+    let loading = true;
     let sortedQuotes;
-    let reverseOrder = [];
+    let reverseOrder;
 
     onMount(async () => {
         const allQuotes = await callQuoteApi();
@@ -25,17 +27,25 @@
         );
 
         reverseOrder = Object.keys(sortedQuotes).reverse();
+        await sleep(500);
+        loading = false;
     });
 </script>
 
 <h4 class="analytics-header">Quote count</h4>
-<ul>
-    {#each reverseOrder as entry}
-        <li>
-            <div class="analytics-entry">{entry}: {sortedQuotes[entry]}</div>
-        </li>
-    {/each}
-</ul>
+{#if reverseOrder}
+    <ul>
+        {#each reverseOrder as entry}
+            <li>
+                <div class="analytics-entry">
+                    {entry}: {sortedQuotes[entry]}
+                </div>
+            </li>
+        {/each}
+    </ul>
+{:else if loading}
+    <Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+{/if}
 
 <style>
     .analytics-header {
