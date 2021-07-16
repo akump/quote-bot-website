@@ -83,3 +83,31 @@ button:focus {
 .found-header {
     margin: 5px 5px 5px 0;
 }
+
+.quote-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.quote-text {
+    flex-basis: 80%;
+    margin: 0;
+}
+
+.quote-date {
+    margin: 0;
+}
+
+.wide-go {
+    width: 50px;
+}
+
+.quote-no-date {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.quote-no-date .quote-text {
+    flex-basis: 100%;
+    margin: 0;
+}

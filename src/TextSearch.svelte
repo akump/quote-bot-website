@@ -1,0 +1,122 @@
+<script>
+    import { Circle } from "svelte-loading-spinners";
+    import Toggle from "svelte-toggle";
+    import {
+        sleep,
+        capitalize,
+        getDateFromText,
+        handleRadio,
+        callQuoteApi,
+    } from "./utils.js";
+
+    let toggled;
+    let selected;
+    let input = "";
+    let allUsersQuotes;
+    let loading = false;
+    let searchQuery = "";
+
+    const options = ["name", "quote"];
+    const radioSelection = localStorage.getItem("radioSelection");
+
+    if (!radioSelection) {
+        localStorage.setItem("radioSelection", "name");
+        selected = "name";
+    } else {
+        selected = radioSelection;
+    }
+
+    const findQuotes = async function () {
+        loading = true;
+        allUsersQuotes = null;
+        searchQuery = input;
+        try {
+            let queryName = selected;
+            allUsersQuotes = await callQuoteApi(queryName, searchQuery);
+            await sleep(500);
+        } catch {
+            allUsersQuotes = [];
+        }
+        loading = false;
+    };
+</script>
+
+<div class="label">Search type</div>
+{#each options as value}
+    <label
+        ><input
+            class="radio-button"
+            type="radio"
+            {value}
+            bind:group={selected}
+            on:click|once={handleRadio}
+        />{capitalize(value)}</label
+    >
+{/each}
+
+<div class="label">Show date quote was added</div>
+<Toggle
+    bind:toggled
+    hideLabel
+    toggledColor="#b10bb1"
+    label="Show date added?"
+/>
+
+<form on:submit|preventDefault={findQuotes}>
+    <label for="imageNum"
+        >Find quotes: <input
+            style="width: 150px"
+            type="text"
+            id="input"
+            name="input"
+            bind:value={input}
+        />
+        <button class="wide-go" type="submit"> Go </button>
+    </label>
+</form>
+
+{#if allUsersQuotes}
+    {#if allUsersQuotes.length === 0}
+        <h4 class="found-header">No quotes found</h4>
+    {:else if allUsersQuotes.length === 1}
+        <h4 class="found-header">
+            Found 1 quote for "{searchQuery}"
+        </h4>
+    {:else if allUsersQuotes.length > 0}
+        <h4 class="found-header">
+            Found {allUsersQuotes.length} quotes for "{searchQuery}"
+        </h4>
+    {:else}
+        <h4>Error finding quotes</h4>
+    {/if}
+    <ol>
+        {#each allUsersQuotes as entry}
+            <li>
+                {#if toggled}
+                    <div class="quote-container">
+                        <p class="quote-text">{entry.quote}</p>
+                        <p class="quote-date">
+                            {getDateFromText(entry.timestamp)}
+                        </p>
+                    </div>
+                {:else}
+                    <div class="quote-no-date">
+                        <p class="quote-text">{entry.quote}</p>
+                    </div>
+                {/if}
+            </li>
+        {/each}
+    </ol>
+{:else if loading}
+    <Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+{/if}
+
+<style>
+    .label {
+        margin-bottom: 5px;
+    }
+
+    .radio-button {
+        margin-right: 5px;
+    }
+</style>
