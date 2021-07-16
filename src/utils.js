@@ -31,9 +31,7 @@ const handleRadio = function (e) {
     localStorage.setItem("radioSelection", e.target.defaultValue);
 };
 
-const isValidDate = function (d) {
-    return d instanceof Date && !isNaN(d);
-};
+const isValidDate = date => date instanceof Date && !isNaN(date);
 
 const callQuoteApi = async function (queryName, searchQuery = '') {
     let url = `https://quote-test-app.herokuapp.com/quotes?`;
