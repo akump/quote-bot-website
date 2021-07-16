@@ -1,5 +1,6 @@
 <script>
     import { fade } from "svelte/transition";
+    import { callQuoteApi } from "./utils.js";
 
     const getRandomQuote = async function () {
         let allQuotes;
