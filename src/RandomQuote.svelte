@@ -22,7 +22,13 @@
 {#await getRandomQuote()}
     <p>&nbsp</p>
 {:then quoteEntry}
-    <p transition:fade>
+    <p class="random-quote" transition:fade>
         {quoteEntry.quote}
     </p>
 {/await}
+
+<style>
+    .random-quote {
+        margin: 10px 0;
+    }
+</style>
