@@ -58,7 +58,7 @@
 <form class="date-form" on:submit|preventDefault={dateSearch}>
     <label class="date-label"
         >Start date <input
-            style="width: 150px"
+            style="width: 150px; height: 35px"
             type="date"
             id="startDateInput"
             name="startDateInput"
@@ -67,7 +67,7 @@
     </label>
     <label class="date-label"
         >End date <input
-            style="width: 150px"
+            style="width: 150px; height: 35px"
             type="date"
             id="endDateInput"
             name="endDateInput"
