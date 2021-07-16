@@ -54,7 +54,7 @@
     };
 </script>
 
-<h4>Dates should be formatted month/day/year</h4>
+<h4 class="date-header">Dates should be formatted month/day/year</h4>
 <form class="date-form" on:submit|preventDefault={dateSearch}>
     <label class="date-label"
         >Start date <input
@@ -120,5 +120,9 @@
     .date-search-button {
         height: 33px;
         align-self: flex-end;
+    }
+
+    .date-header {
+        margin: 5px 5px 5px 0;
     }
 </style>
