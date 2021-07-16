@@ -5,7 +5,7 @@
         getQuoteBetweenDates,
         callQuoteApi,
     } from "./utils";
-    import { Circle } from "svelte-loading-spinners";
+    import Spinner from "./Spinner.svelte";
 
     let startDateInput = "2019-07-01";
     let endDateInput = "2021-12-31";
@@ -103,7 +103,7 @@
         {/each}
     </ol>
 {:else if loading}
-    <Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+    <Spinner />
 {/if}
 
 <style>

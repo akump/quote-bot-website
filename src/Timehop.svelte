@@ -1,6 +1,6 @@
 <script>
     import { callQuoteApi, getQuoteBetweenDates } from "./utils.js";
-    import { Circle } from "svelte-loading-spinners";
+    import Spinner from "./Spinner.svelte";
     import { onMount } from "svelte";
 
     let oneYearOldQuotes = [];
@@ -29,7 +29,7 @@
 
 <h4 class="found-header">1 year ago today</h4>
 {#if loading}
-    <Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+    <Spinner />
 {:else if oneYearOldQuotes.length === 0}
     <p>No quotes found</p>
 {:else if oneYearOldQuotes.length > 0}
@@ -48,7 +48,7 @@
 
 <h4 class="found-header">2 years ago today</h4>
 {#if loading}
-    <Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+    <Spinner />
 {:else if twoYearOldQuotes.length === 0}
     <p>No quotes found</p>
 {:else if twoYearOldQuotes.length > 0}

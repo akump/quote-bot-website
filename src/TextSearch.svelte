@@ -1,7 +1,7 @@
 <svelte:options immutable={false} accessors={true} />
 
 <script>
-    import { Circle } from "svelte-loading-spinners";
+    import Spinner from "./Spinner.svelte";
     import Toggle from "svelte-toggle";
     import { onMount } from "svelte";
     import {
@@ -138,7 +138,7 @@
         {/each}
     </ol>
 {:else if loading}
-    <Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+    <Spinner />
 {/if}
 
 <style>

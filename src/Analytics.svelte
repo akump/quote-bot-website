@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { callQuoteApi, sleep } from "./utils.js";
-    import { Circle } from "svelte-loading-spinners";
+    import Spinner from "./Spinner.svelte";
 
     let loading = true;
     let sortedQuotes;
@@ -44,7 +44,7 @@
         {/each}
     </ul>
 {:else if loading}
-    <Circle size="30" color="#b10bb1" unit="px" duration="1s" />
+    <Spinner />
 {/if}
 
 <style>
