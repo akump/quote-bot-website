@@ -55,8 +55,8 @@
     onMount(() => {
         dateToggle = localStorage.getItem("dateToggle");
         if (dateToggle === null) {
-            localStorage.setItem("dateToggle", true);
-            dateToggle = true;
+            localStorage.setItem("dateToggle", false);
+            dateToggle = false;
         }
         if (typeof dateToggle !== "boolean") {
             dateToggle = isTrue(dateToggle);
