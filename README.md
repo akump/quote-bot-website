@@ -4,7 +4,7 @@ Front end for Memecenter's [quote bot](https://github.com/SpoonDoctor/QuoteBot).
 
 **Note**: Some quotes are NSFW
 
-![alt text](./example.png)
+![alt text](./example2.png)
 
 ## TODO
 
