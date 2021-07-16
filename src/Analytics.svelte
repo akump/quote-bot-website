@@ -1,22 +1,12 @@
 <script>
     import { onMount } from "svelte";
+    import { callQuoteApi } from "./utils.js";
 
     let sortedQuotes;
     let reverseOrder = [];
 
     onMount(async () => {
-        let allQuotes;
-        let cachedQuotes = localStorage.getItem("quotes");
-
-        if (!cachedQuotes) {
-            allQuotes = await callQuoteApi();
-            const stringifiedQuotes = JSON.stringify(allQuotes, null, 2);
-            localStorage.setItem("quotes", stringifiedQuotes);
-        } else {
-            const objQuotes = JSON.parse(cachedQuotes, null, 2);
-            allQuotes = objQuotes;
-        }
-
+        const allQuotes = await callQuoteApi();
         const quoteStats = allQuotes.reduce(function (
             quoteeCount,
             currentValue
