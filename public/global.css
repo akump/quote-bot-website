@@ -91,7 +91,8 @@ button:focus {
 
 .quote-text {
     flex-basis: 80%;
-    margin: 0;
+    margin: 0 5px 0 0;
+    word-break: break-word;
 }
 
 .quote-date {
