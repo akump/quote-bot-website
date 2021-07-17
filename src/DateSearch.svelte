@@ -112,8 +112,4 @@
     height: 33px;
     align-self: flex-end;
   }
-
-  .date-header {
-    margin: 5px 5px 5px 0;
-  }
 </style>
