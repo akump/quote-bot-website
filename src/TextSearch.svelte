@@ -37,6 +37,7 @@
     try {
       let queryName = selected;
       allUsersQuotes = await callQuoteApi(queryName, searchQuery);
+      allUsersQuotes = allUsersQuotes.reverse();
       await sleep(500);
     } catch {
       allUsersQuotes = [];
