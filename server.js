@@ -3,7 +3,7 @@ import {
     resolve
 } from 'path';
 const app = express();
-const port = 5002;
+const port = 3000;
 
 app.use(express.static('public'));
 
