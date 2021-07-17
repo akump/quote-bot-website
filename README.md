@@ -11,4 +11,3 @@ Front end for Memecenter's [quote bot](https://github.com/SpoonDoctor/QuoteBot).
 * Analytics tab ideas
   * Day with most quotes added
   * Largest amount of time with no quotes added
-
