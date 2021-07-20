@@ -8,7 +8,7 @@
   import Spinner from "./Spinner.svelte";
 
   let startDateInput = "2019-07-01";
-  let endDateInput = "2021-12-31";
+  let endDateInput = "2022-12-31";
   let loading = false;
   let quotesInTimeframe;
 
