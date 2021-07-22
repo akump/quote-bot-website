@@ -29,8 +29,9 @@
       endYear = "2022";
     }
 
-    const startDate = new Date(startYear, parseInt(startMonth) - 1, startDay);
-    const endDate = new Date(endYear, parseInt(endMonth) - 1, parseInt(endDay));
+    let startDate = new Date(startYear, parseInt(startMonth) - 1, startDay);
+    startDate.setUTCHours(0, 0, 0, 0);
+    let endDate = new Date(endYear, parseInt(endMonth) - 1, parseInt(endDay));
     endDate.setUTCHours(23, 59, 59, 999);
 
     if (!isValidDate(startDate) || !isValidDate(endDate)) {
