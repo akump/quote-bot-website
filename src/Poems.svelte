@@ -11,9 +11,12 @@
       poems = await callPoemApi();
       poems = poems.map((poem) => {
         const ret = poem;
-        ret.text = ret.text.replace(/(?:\r\n|\r|\n)/g, ", ");
+        if (ret.text.includes("Roses are red")) {
+          ret.text = ret.text.replace(/(?:\r\n|\r|\n)/g, ", ");
+        }
         return ret;
       });
+      poems = poems.reverse();
     } catch {
       poems = [{ text: "Mike's api broke oopsie woopsies" }];
     }
@@ -24,7 +27,7 @@
 <h4 class="header">All poems</h4>
 <p>Updated 1/14 cuz Mike's API doesn't work with cors</p>
 {#if poems}
-  <ul>
+  <ol>
     {#each poems as poem}
       <li>
         <p class="poem">
@@ -33,7 +36,7 @@
         </p>
       </li>
     {/each}
-  </ul>
+  </ol>
 {:else if loading}
   <Spinner />
 {/if}
