@@ -12,31 +12,25 @@
     callQuoteApi,
   } from "./utils.js";
 
-  let toggleElement;
+  let dateElement;
   let dateToggle;
+  let oldestElement;
+  let oldestToggle;
   let selected;
-  let input = "";
+  let searchInput = "";
   let allUsersQuotes;
   let loading = false;
-  let searchQuery = "";
-
   const options = ["name", "quote"];
-  const radioSelection = localStorage.getItem("radioSelection");
-
-  if (!radioSelection) {
-    localStorage.setItem("radioSelection", "name");
-    selected = "name";
-  } else {
-    selected = radioSelection;
-  }
 
   const findQuotes = async function () {
     loading = true;
     allUsersQuotes = null;
-    searchQuery = input;
     try {
       let queryName = selected;
-      allUsersQuotes = await callQuoteApi(queryName, searchQuery);
+      allUsersQuotes = await callQuoteApi(queryName, searchInput);
+      if (!oldestToggle) {
+        allUsersQuotes = allUsersQuotes.reverse();
+      }
       await sleep(500);
     } catch {
       allUsersQuotes = [];
@@ -46,13 +40,21 @@
 
   const isTrue = (val) => val === "true";
 
-  const setToggleLocalStorage = function (e) {
+  const setDateLocalStorage = function () {
     const toggleValue = localStorage.getItem("dateToggle");
     localStorage.setItem("dateToggle", !isTrue(toggleValue));
     dateToggle = !isTrue(toggleValue);
   };
 
+  const setOldestleLocalStorage = function () {
+    const toggleValue = localStorage.getItem("oldestToggle");
+    localStorage.setItem("oldestToggle", !isTrue(toggleValue));
+    oldestToggle = !isTrue(toggleValue);
+    allUsersQuotes = allUsersQuotes.reverse();
+  };
+
   onMount(() => {
+    // Date
     dateToggle = localStorage.getItem("dateToggle");
     if (dateToggle === null) {
       localStorage.setItem("dateToggle", false);
@@ -61,12 +63,32 @@
     if (typeof dateToggle !== "boolean") {
       dateToggle = isTrue(dateToggle);
     }
-    toggleElement.$set({ toggled: dateToggle });
+    dateElement.$set({ toggled: dateToggle });
+
+    // Oldest
+    oldestToggle = localStorage.getItem("oldestToggle");
+    if (oldestToggle === null) {
+      localStorage.setItem("oldestToggle", false);
+      oldestToggle = false;
+    }
+    if (typeof oldestToggle !== "boolean") {
+      oldestToggle = isTrue(oldestToggle);
+    }
+    oldestElement.$set({ toggled: oldestToggle });
+
+    // Radio
+    const radioSelection = localStorage.getItem("radioSelection");
+    if (!radioSelection) {
+      localStorage.setItem("radioSelection", "name");
+      selected = "name";
+    } else {
+      selected = radioSelection;
+    }
   });
 </script>
 
 <div class="options-container">
-  <div class="option-type">
+  <div class="option">
     <div class="label">Search type</div>
     {#each options as value}
       <label
@@ -80,12 +102,22 @@
       >
     {/each}
   </div>
+  <div class="option">
+    <div class="label">Oldest first</div>
+    <Toggle
+      bind:oldestToggle
+      on:click={setOldestleLocalStorage}
+      bind:this={oldestElement}
+      hideLabel
+      toggledColor="#b10bb1"
+    />
+  </div>
   <div class="option-date">
     <div class="label">Show date</div>
     <Toggle
       bind:dateToggle
-      on:click={setToggleLocalStorage}
-      bind:this={toggleElement}
+      on:click={setDateLocalStorage}
+      bind:this={dateElement}
       hideLabel
       toggledColor="#b10bb1"
       label="Show date added?"
@@ -97,9 +129,9 @@
     >Find quotes: <input
       style="width: 150px"
       type="text"
-      id="input"
-      name="input"
-      bind:value={input}
+      id="searchInput"
+      name="searchInput"
+      bind:value={searchInput}
     />
     <button class="wide-go" type="submit"> Go </button>
   </label>
@@ -110,11 +142,11 @@
     <h4 class="found-header">No quotes found</h4>
   {:else if allUsersQuotes.length === 1}
     <h4 class="found-header">
-      Found 1 quote for "{searchQuery}"
+      Found 1 quote for "{searchInput}"
     </h4>
   {:else if allUsersQuotes.length > 0}
     <h4 class="found-header">
-      Found {allUsersQuotes.length} quotes for "{searchQuery}"
+      Found {allUsersQuotes.length} quotes for "{searchInput}"
     </h4>
   {:else}
     <h4>Error finding quotes</h4>
@@ -151,14 +183,14 @@
   }
   .options-container {
     display: flex;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     padding-bottom: 5px;
-    /* border-bottom: 1px solid rgba(255, 255, 255, 0.25); */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   }
-  .option-type {
+  .option {
     flex: 0 0 auto;
-    margin-right: 1rem;
-    padding-right: 1rem;
+    margin-right: 10px;
+    padding-right: 10px;
 
     border-right: 1px solid rgba(255, 255, 255, 0.25);
   }

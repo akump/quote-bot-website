@@ -8,7 +8,7 @@
   import Spinner from "./Spinner.svelte";
 
   let startDateInput = "2019-07-01";
-  let endDateInput = "2021-12-31";
+  let endDateInput = "2022-12-31";
   let loading = false;
   let quotesInTimeframe;
 
@@ -29,8 +29,9 @@
       endYear = "2022";
     }
 
-    const startDate = new Date(startYear, parseInt(startMonth) - 1, startDay);
-    const endDate = new Date(endYear, parseInt(endMonth) - 1, parseInt(endDay));
+    let startDate = new Date(startYear, parseInt(startMonth) - 1, startDay);
+    startDate.setUTCHours(0, 0, 0, 0);
+    let endDate = new Date(endYear, parseInt(endMonth) - 1, parseInt(endDay));
     endDate.setUTCHours(23, 59, 59, 999);
 
     if (!isValidDate(startDate) || !isValidDate(endDate)) {
@@ -49,7 +50,7 @@
 <form class="date-form" on:submit|preventDefault={dateSearch}>
   <label class="date-label"
     >Start date <input
-      style="width: 150px; height: 35px"
+      style="width: 155px; height: 35px"
       type="date"
       id="startDateInput"
       name="startDateInput"
@@ -58,7 +59,7 @@
   </label>
   <label class="date-label"
     >End date <input
-      style="width: 150px; height: 35px"
+      style="width: 155px; height: 35px"
       type="date"
       id="endDateInput"
       name="endDateInput"

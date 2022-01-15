@@ -1,4 +1,7 @@
-import poems from './poems'
+import poems from '../backup/poems-1-14-2022'
+
+const re = /%CC%/g
+const hasZalgo = txt => re.test(encodeURIComponent(txt));
 
 const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -41,15 +44,24 @@ const callQuoteApi = async function (queryName, searchQuery = '') {
         url = `https://quote-test-app.herokuapp.com/quotes?${queryName}=${searchQuery}`;
     }
     const getQuotesRes = await fetch(url);
-    const json = await getQuotesRes.json();
-    return json.results;
+    let json = await getQuotesRes.json();
+    let res = json.results;
+    // Fix zalgo attack
+    /*
+    for (let entry of res) {
+        if (hasZalgo(entry.quote)) {
+            entry.quote = "fucc ur zalgo";
+        }
+    }
+    */
+    return res;
 };
 
 const callPoemApi = async function () {
     // const getPoemsRes = await fetch("http://lootboxsim-env.eba-j5ptekaw.us-east-2.elasticbeanstalk.com/poems");
     return poems;
-    const json = await getPoemsRes.json();
-    return json.results;
+    // const json = await getPoemsRes.json();
+    // return json.results;
 };
 
 const getQuoteBetweenDates = function (quote, startDate, endDate) {
@@ -71,5 +83,6 @@ export {
     isValidDate,
     callQuoteApi,
     getQuoteBetweenDates,
-    callPoemApi
+    callPoemApi,
+    hasZalgo
 };

@@ -10,8 +10,9 @@
 
   const getQuotesFromYearsAgo = async function (year = "2019") {
     const now = new Date();
-    const startDate = new Date(year, now.getMonth(), now.getDate());
-    const endDate = new Date(year, now.getMonth(), now.getDate());
+    let startDate = new Date(year, now.getUTCMonth(), now.getUTCDate());
+    startDate.setUTCHours(0, 0, 0, 0);
+    let endDate = new Date(year, now.getUTCMonth(), now.getUTCDate());
     endDate.setUTCHours(23, 59, 59, 999);
     return allQuotes.filter((entry) =>
       getQuoteBetweenDates(entry, startDate, endDate)
