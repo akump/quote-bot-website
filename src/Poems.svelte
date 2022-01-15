@@ -22,8 +22,9 @@
 </script>
 
 <h4 class="header">All poems</h4>
+<p>Updated 1/14 cuz Mike's API doesn't work with cors</p>
 {#if poems}
-  <ol>
+  <ul>
     {#each poems as poem}
       <li>
         <p class="poem">
@@ -32,7 +33,7 @@
         </p>
       </li>
     {/each}
-  </ol>
+  </ul>
 {:else if loading}
   <Spinner />
 {/if}
