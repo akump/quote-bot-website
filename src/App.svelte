@@ -4,6 +4,7 @@
   import RandomQuote from "./RandomQuote.svelte";
   import Timehop from "./Timehop.svelte";
   import Analytics from "./Analytics.svelte";
+  import Poems from "./Poems.svelte";
   import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 </script>
 
@@ -15,7 +16,8 @@
       <Tab>Text</Tab>
       <Tab>Date</Tab>
       <Tab>Timehop</Tab>
-      <Tab>Analytics</Tab>
+      <Tab>Stats</Tab>
+      <Tab>Poems</Tab>
     </TabList>
     <TabPanel>
       <TextSearch />
@@ -28,6 +30,9 @@
     </TabPanel>
     <TabPanel>
       <Analytics />
+    </TabPanel>
+    <TabPanel>
+      <Poems />
     </TabPanel>
   </Tabs>
 </main>

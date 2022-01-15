@@ -1,3 +1,5 @@
+import poems from './poems'
+
 const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
@@ -43,6 +45,13 @@ const callQuoteApi = async function (queryName, searchQuery = '') {
     return json.results;
 };
 
+const callPoemApi = async function () {
+    // const getPoemsRes = await fetch("http://lootboxsim-env.eba-j5ptekaw.us-east-2.elasticbeanstalk.com/poems");
+    return poems;
+    const json = await getPoemsRes.json();
+    return json.results;
+};
+
 const getQuoteBetweenDates = function (quote, startDate, endDate) {
     const {
         timestamp
@@ -61,5 +70,6 @@ export {
     handleRadio,
     isValidDate,
     callQuoteApi,
-    getQuoteBetweenDates
+    getQuoteBetweenDates,
+    callPoemApi
 };
