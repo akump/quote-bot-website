@@ -58,10 +58,13 @@ const callQuoteApi = async function (queryName, searchQuery = '') {
 };
 
 const callPoemApi = async function () {
-    // const getPoemsRes = await fetch("http://lootboxsim-env.eba-j5ptekaw.us-east-2.elasticbeanstalk.com/poems");
-    return poems;
-    // const json = await getPoemsRes.json();
-    // return json.results;
+    try {
+        const getPoemsRes = await fetch("http://lootboxsim-env.eba-j5ptekaw.us-east-2.elasticbeanstalk.com/poems");
+        const json = await getPoemsRes.json();
+        return json.results;
+    } catch {
+        return poems;
+    }
 };
 
 const getQuoteBetweenDates = function (quote, startDate, endDate) {
