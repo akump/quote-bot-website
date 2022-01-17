@@ -59,7 +59,7 @@ const callQuoteApi = async function (queryName, searchQuery = '') {
 
 const callPoemApi = async function () {
     try {
-        const getPoemsRes = await fetch("http://lootboxsim-env.eba-j5ptekaw.us-east-2.elasticbeanstalk.com/poems");
+        const getPoemsRes = await fetch("https://lootboxsim-env.eba-j5ptekaw.us-east-2.elasticbeanstalk.com/poems");
         const json = await getPoemsRes.json();
         return {
             poems: json.results,
