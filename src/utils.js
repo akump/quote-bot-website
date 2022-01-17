@@ -75,9 +75,7 @@ const callPoemApi = async function () {
 };
 
 const getQuoteBetweenDates = function (quote, startDate, endDate) {
-    const {
-        timestamp
-    } = quote;
+    const { timestamp } = quote;
     const currQuoteDate = new Date(timestamp);
     if (currQuoteDate > startDate && currQuoteDate < endDate) {
         return quote;
