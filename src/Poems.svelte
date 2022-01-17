@@ -5,10 +5,13 @@
 
   let loading = true;
   let poems;
+  let sass;
 
   onMount(async () => {
     try {
-      poems = await callPoemApi();
+      const res = await callPoemApi();
+      poems = res.poems;
+      sass = res.sass;
       poems = poems.map((poem) => {
         const ret = poem;
         if (ret.text.includes("Roses are red")) {
@@ -25,6 +28,9 @@
 </script>
 
 <h4 class="header">All poems</h4>
+{#if poems}
+  <p>Using old results cuz mike's api broke</p>
+{/if}
 {#if poems}
   <ol>
     {#each poems as poem}

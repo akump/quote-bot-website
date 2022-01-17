@@ -61,10 +61,17 @@ const callPoemApi = async function () {
     try {
         const getPoemsRes = await fetch("http://lootboxsim-env.eba-j5ptekaw.us-east-2.elasticbeanstalk.com/poems");
         const json = await getPoemsRes.json();
-        return json.results;
+        return {
+            poems: json.results,
+            sass: false
+        };
     } catch {
-        return poems;
+        return {
+            poems: poems,
+            sass: true
+        };
     }
+
 };
 
 const getQuoteBetweenDates = function (quote, startDate, endDate) {
