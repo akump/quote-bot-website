@@ -25,7 +25,6 @@
 </script>
 
 <h4 class="header">All poems</h4>
-<p>Updated 1/14 cuz Mike's API doesn't work with cors</p>
 {#if poems}
   <ol>
     {#each poems as poem}
