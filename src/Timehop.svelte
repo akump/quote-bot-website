@@ -5,6 +5,7 @@
 
   let oneYearOldQuotes = [];
   let twoYearOldQuotes = [];
+  let threeYearOldQuotes = [];
   let allQuotes = null;
   let loading = false;
 
@@ -22,8 +23,9 @@
   onMount(async () => {
     loading = true;
     allQuotes = await callQuoteApi();
-    oneYearOldQuotes = await getQuotesFromYearsAgo("2020");
-    twoYearOldQuotes = await getQuotesFromYearsAgo("2019");
+    oneYearOldQuotes = await getQuotesFromYearsAgo("2021");
+    twoYearOldQuotes = await getQuotesFromYearsAgo("2020");
+    threeYearOldQuotes = await getQuotesFromYearsAgo("2019");
     loading = false;
   });
 </script>
@@ -55,6 +57,26 @@
 {:else if twoYearOldQuotes.length > 0}
   <ol>
     {#each twoYearOldQuotes as entry}
+      <li>
+        <div class="quote-container">
+          <p class="quote-text">{entry.quote}</p>
+        </div>
+      </li>
+    {/each}
+  </ol>
+{/if}
+
+
+<br />
+
+<h4 class="found-header">3 years ago today</h4>
+{#if loading}
+  <Spinner />
+{:else if threeYearOldQuotes.length === 0}
+  <p>No quotes found</p>
+{:else if threeYearOldQuotes.length > 0}
+  <ol>
+    {#each threeYearOldQuotes as entry}
       <li>
         <div class="quote-container">
           <p class="quote-text">{entry.quote}</p>
