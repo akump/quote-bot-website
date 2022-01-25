@@ -62,7 +62,7 @@ const callPoemApi = async function () {
         const getPoemsRes = await fetch("https://api.memecenter.org/poems");
         const json = await getPoemsRes.json();
         return {
-            poems: json.results,
+            poems: json,
             sass: false
         };
     } catch {

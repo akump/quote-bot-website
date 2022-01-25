@@ -28,7 +28,7 @@
 </script>
 
 <h4 class="header">All poems</h4>
-{#if poems}
+{#if sass}
   <p>Using old results cuz mike's api broke</p>
 {/if}
 {#if poems}
