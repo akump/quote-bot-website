@@ -39,9 +39,9 @@ const handleRadio = function (e) {
 const isValidDate = date => date instanceof Date && !isNaN(date);
 
 const callQuoteApi = async function (queryName, searchQuery = '') {
-    let url = `https://quote-test-app.herokuapp.com/quotes?`;
+    let url = `https://2apsl5fkh6.execute-api.us-east-1.amazonaws.com/dev/quotes?`;
     if (queryName) {
-        url = `https://quote-test-app.herokuapp.com/quotes?${queryName}=${searchQuery}`;
+        url = `https://2apsl5fkh6.execute-api.us-east-1.amazonaws.com/dev/quotes?${queryName}=${searchQuery}`;
     }
     const getQuotesRes = await fetch(url);
     let json = await getQuotesRes.json();
