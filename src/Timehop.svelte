@@ -66,7 +66,6 @@
   </ol>
 {/if}
 
-
 <br />
 
 <h4 class="found-header">3 years ago today</h4>
