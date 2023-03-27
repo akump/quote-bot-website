@@ -9,8 +9,10 @@
 </script>
 
 <main>
-  <h1>Quote Bot</h1>
-  <RandomQuote />
+  <h1>
+    <a href="https://github.com/SpoonDoctor/GroupMeAllIn1Bot/issues/1">Issue link</a>
+  </h1>
+  <!-- <RandomQuote />
   <Tabs>
     <TabList>
       <Tab>Text</Tab>
@@ -34,7 +36,7 @@
     <TabPanel>
       <Poems />
     </TabPanel>
-  </Tabs>
+  </Tabs> -->
 </main>
 
 <style>
@@ -50,6 +52,10 @@
     font-weight: 150;
     margin-top: 0;
     margin-bottom: 0;
+  }
+
+  a {
+    color: #b10bb1 !important;
   }
 
   @media (min-width: 640px) {
