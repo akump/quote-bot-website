@@ -43,18 +43,22 @@ const callQuoteApi = async function (queryName, searchQuery = '') {
     if (queryName) {
         url = `https://2apsl5fkh6.execute-api.us-east-1.amazonaws.com/dev/quotes?${queryName}=${searchQuery}`;
     }
-    const getQuotesRes = await fetch(url);
-    let json = await getQuotesRes.json();
+    let json;
+    try {
+        const getQuotesRes = await fetch(url);
+        json = await getQuotesRes.json();
+    } catch (err) {
+        return []
+    }
+
     let res = json.results;
     // Fix zalgo attack
-    /*
     for (let entry of res) {
         if (hasZalgo(entry.quote)) {
-            entry.quote = "fucc ur zalgo";
+            entry.quote = "";
         }
     }
-    */
-    return res;
+    return res || [];
 };
 
 const callPoemApi = async function () {
