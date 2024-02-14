@@ -150,7 +150,4 @@
 
     border-right: 1px solid rgba(255, 255, 255, 0.25);
   }
-  .option-date {
-    flex: 1;
-  }
 </style>
