@@ -2,22 +2,18 @@
   import TextSearch from "./TextSearch.svelte";
   import DateSearch from "./DateSearch.svelte";
   import RandomQuote from "./RandomQuote.svelte";
-  import Timehop from "./Timehop.svelte";
   import Analytics from "./Analytics.svelte";
   import Poems from "./Poems.svelte";
   import { Tabs, Tab, TabList, TabPanel } from "svelte-tabs";
 </script>
 
 <main>
-  <h1>
-    <a href="https://github.com/SpoonDoctor/GroupMeAllIn1Bot/issues/1">Issue link</a>
-  </h1>
-  <!-- <RandomQuote />
+  <h1>Quote Bot</h1>
+  <RandomQuote />
   <Tabs>
     <TabList>
       <Tab>Text</Tab>
       <Tab>Date</Tab>
-      <Tab>Timehop</Tab>
       <Tab>Stats</Tab>
       <Tab>Poems</Tab>
     </TabList>
@@ -27,16 +23,14 @@
     <TabPanel>
       <DateSearch />
     </TabPanel>
-    <TabPanel>
-      <Timehop />
-    </TabPanel>
+    <TabPanel></TabPanel>
     <TabPanel>
       <Analytics />
     </TabPanel>
     <TabPanel>
       <Poems />
     </TabPanel>
-  </Tabs> -->
+  </Tabs>
 </main>
 
 <style>
