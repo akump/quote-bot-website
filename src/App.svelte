@@ -13,17 +13,12 @@
   <Tabs>
     <TabList>
       <Tab>Text</Tab>
-      <Tab>Date</Tab>
       <Tab>Stats</Tab>
       <Tab>Poems</Tab>
     </TabList>
     <TabPanel>
       <TextSearch />
     </TabPanel>
-    <TabPanel>
-      <DateSearch />
-    </TabPanel>
-    <TabPanel></TabPanel>
     <TabPanel>
       <Analytics />
     </TabPanel>
