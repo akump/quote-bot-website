@@ -4,16 +4,9 @@
   import Spinner from "./Spinner.svelte";
   import Toggle from "svelte-toggle";
   import { onMount } from "svelte";
-  import {
-    sleep,
-    capitalize,
-    getDateFromText,
-    handleRadio,
-    callQuoteApi,
-  } from "./utils.js";
+  import { sleep, capitalize, handleRadio, callQuoteApi } from "./utils.js";
 
   let dateElement;
-  let dateToggle;
   let oldestElement;
   let oldestToggle;
   let selected;
@@ -40,12 +33,6 @@
 
   const isTrue = (val) => val === "true";
 
-  const setDateLocalStorage = function () {
-    const toggleValue = localStorage.getItem("dateToggle");
-    localStorage.setItem("dateToggle", !isTrue(toggleValue));
-    dateToggle = !isTrue(toggleValue);
-  };
-
   const setOldestleLocalStorage = function () {
     const toggleValue = localStorage.getItem("oldestToggle");
     localStorage.setItem("oldestToggle", !isTrue(toggleValue));
@@ -54,17 +41,6 @@
   };
 
   onMount(() => {
-    // Date
-    dateToggle = localStorage.getItem("dateToggle");
-    if (dateToggle === null) {
-      localStorage.setItem("dateToggle", false);
-      dateToggle = false;
-    }
-    if (typeof dateToggle !== "boolean") {
-      dateToggle = isTrue(dateToggle);
-    }
-    dateElement.$set({ toggled: dateToggle });
-
     // Oldest
     oldestToggle = localStorage.getItem("oldestToggle");
     if (oldestToggle === null) {
@@ -112,17 +88,6 @@
       toggledColor="#b10bb1"
     />
   </div>
-  <div class="option-date">
-    <div class="label">Show date</div>
-    <Toggle
-      bind:dateToggle
-      on:click={setDateLocalStorage}
-      bind:this={dateElement}
-      hideLabel
-      toggledColor="#b10bb1"
-      label="Show date added?"
-    />
-  </div>
 </div>
 <form on:submit|preventDefault={findQuotes}>
   <label for="imageNum"
@@ -154,18 +119,9 @@
   <ol>
     {#each allUsersQuotes as entry}
       <li>
-        {#if dateToggle}
-          <div class="quote-container">
-            <p class="quote-text">{entry.quote}</p>
-            <p class="quote-date">
-              {getDateFromText(entry.timestamp)}
-            </p>
-          </div>
-        {:else}
-          <div class="quote-no-date">
-            <p class="quote-text">{entry.quote}</p>
-          </div>
-        {/if}
+        <div class="quote-no-date">
+          <p class="quote-text">{entry.quote}</p>
+        </div>
       </li>
     {/each}
   </ol>
