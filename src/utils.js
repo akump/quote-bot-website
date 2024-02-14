@@ -44,7 +44,7 @@ const callQuoteApi = async function (queryName, searchQuery = "") {
   if (queryName === "name") {
     let queriedQuotes = [];
     for (const quote of quotes) {
-      if (quote.user.toUpperCase().includes(searchQuery.toUpperCase())) {
+      if (quote.user.toUpperCase() === searchQuery.toUpperCase()) {
         queriedQuotes.push(quote);
       }
     }
